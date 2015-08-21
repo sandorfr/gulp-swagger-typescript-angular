@@ -1,0 +1,13 @@
+/// <reference path="api.d.ts" />
+module {{module}} {
+    'use strict';
+
+    export class {{className}} {{#ancestorClass}}extends {{.}}{{/ancestorClass}} {
+
+    {{#properties}}
+        {{#description}}/*{{.}}*/{{/description}}
+        {{name}}: {{type}};
+    {{/properties}}
+
+    }
+}

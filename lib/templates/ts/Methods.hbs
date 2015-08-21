@@ -1,0 +1,54 @@
+/// <reference path="api.d.ts" />
+module {{module}} {
+    'use strict';
+
+    export class {{clientName}}  {
+        private baseUri;
+
+        /* ngInject */
+        constructor(private $http: angular.IHttpService){
+            this.baseUri = '{{scheme}}' + '://' + '{{host}}' + '{{basePath}}';
+        }
+        {{#methods}}
+
+        /*{{description}}*/
+        public {{verbCamlCase}}{{sanitizedPath}}({{#args}}{{argName}}{{#optional}}?{{/optional}}: {{type}}{{#unless @last}}, {{/unless}}{{/args}}): angular.IHttpPromise<{{returnType}}>{
+            let uri = this.baseUri + '{{path}}';
+            let queryParameters: any = {};
+            let headerParams: any = {};
+            let httpBody: any = null;
+
+        {{#args}}
+            {{#isHeader}}
+            headerParams['{{name}}'] = {{argName}};
+            {{/isHeader}}
+            {{#isQuery}}
+            queryParameters['{{name}}'] = {{argName}};
+            {{/isQuery}}
+            {{#isBody}}
+            httpBody = {{argName}};
+            {{/isBody}}
+            {{#isPath}}
+            uri = uri.replace(new RegExp('{' + '{{name}}' + '}', 'g'), {{argName}});
+            {{/isPath}}
+        {{/args}}
+
+
+            var httpRequestParams: any = {
+                method: '{{verb}}',
+                url: uri,
+                json: true,
+
+                params: queryParameters,
+                headers: headerParams
+            };
+
+            if (httpBody != null){
+                httpRequestParams.data = httpBody;
+            }
+
+            return this.$http(httpRequestParams);
+        }
+        {{/methods}}
+    }
+}

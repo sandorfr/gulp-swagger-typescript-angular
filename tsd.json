@@ -1,0 +1,36 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "typescript/typescript.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "node/node.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "gulp-util/gulp-util.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "vinyl/vinyl.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "chalk/chalk.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "yargs/yargs.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "through2/through2.d.ts": {
+      "commit": "832c51db815c766fa42a2e995a7b3136ec6d15c2"
+    },
+    "handlebars/handlebars.d.ts": {
+      "commit": "efa0c1196d7280640e624ac1e7fa604502e7bd63"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "efa0c1196d7280640e624ac1e7fa604502e7bd63"
+    }
+  }
+}
