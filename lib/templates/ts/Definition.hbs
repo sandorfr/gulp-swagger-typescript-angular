@@ -6,8 +6,12 @@ module {{module}} {
 
     {{#properties}}
         {{#description}}/*{{.}}*/{{/description}}
-        {{name}}: {{type}};
-    {{/properties}}
+        {{name}}: {{#type.name}}{{.}}{{/type.name}}{{#unless type.name}} {
+            {{#type.properties}}
+                {{name}}: {{type.name}};
+            {{/type.properties}}
+        } {{/unless}};
 
+    {{/properties}}
     }
 }

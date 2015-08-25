@@ -4,19 +4,21 @@ module {{module}} {
 
     export class {{clientName}}  {
         private baseUri;
+{{> fields}}
+
 
         /* ngInject */
-        constructor(private $http: angular.IHttpService){
+        constructor(private $http: angular.IHttpService{{> constructorArgs}}) {
             this.baseUri = '{{scheme}}' + '://' + '{{host}}' + '{{basePath}}';
         }
         {{#methods}}
 
         /*{{description}}*/
-        public {{verbCamlCase}}{{sanitizedPath}}({{#args}}{{argName}}{{#optional}}?{{/optional}}: {{type}}{{#unless @last}}, {{/unless}}{{/args}}): angular.IHttpPromise<{{returnType}}>{
-            let uri = this.baseUri + '{{path}}';
-            let queryParameters: any = {};
-            let headerParams: any = {};
-            let httpBody: any = null;
+        public {{verbCamlCase}}{{sanitizedPath}}({{#args}}{{argName}}{{#optional}}?{{/optional}}: {{type.name}}{{#unless @last}}, {{/unless}}{{/args}}): angular.IHttpPromise<{{returnType}}> {
+            var uri = this.baseUri + '{{path}}';
+            var queryParameters: any = {};
+            var headerParams: any = {};
+            var httpBody: any = null;
 
         {{#args}}
             {{#isHeader}}
@@ -29,7 +31,7 @@ module {{module}} {
             httpBody = {{argName}};
             {{/isBody}}
             {{#isPath}}
-            uri = uri.replace(new RegExp('{' + '{{name}}' + '}', 'g'), {{argName}});
+            uri = uri.replace(new RegExp('{' + '{{name}}' + '}', 'g'), String({{argName}}));
             {{/isPath}}
         {{/args}}
 
@@ -46,6 +48,11 @@ module {{module}} {
             if (httpBody != null){
                 httpRequestParams.data = httpBody;
             }
+
+            {{#security}}
+            // {{key}}
+{{> (lookup . 'key')}}
+            {{/security}}
 
             return this.$http(httpRequestParams);
         }
