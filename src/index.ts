@@ -78,6 +78,9 @@ function main(options: any) {
                                 var definition = swaggerObject.definitions[definitionName];
 
                                 var className = (<string>definitionName).replace(/\//g, '');
+                                if (className === 'Error'){
+                                    className = 'ErrorDto';
+                                }
                                 var fileName = className + '.ts';
                                 fileReferences.push(fileName);
 
@@ -191,7 +194,13 @@ function generateContextFromPropertyDefinition(definition: any): any {
 
 function getClassNameFromRef(ref: string): string {
     var lastSlash = ref.lastIndexOf('/');
-    return ref.substring(lastSlash/*, ref.length - lastSlash - 1*/).replace(/~1/g, '').replace(/\//g, '');
+    var className = ref.substring(lastSlash/*, ref.length - lastSlash - 1*/).replace(/~1/g, '').replace(/\//g, '');
+
+    if (className == 'Error'){
+        return 'ErrorDto';
+    }
+
+    return className;
 }
 
 

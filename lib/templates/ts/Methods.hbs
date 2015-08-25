@@ -7,7 +7,7 @@ module {{module}} {
 {{> fields}}
 
 
-        /* ngInject */
+        /* @ngInject */
         constructor(private $http: angular.IHttpService{{> constructorArgs}}) {
             this.baseUri = '{{scheme}}' + '://' + '{{host}}' + '{{basePath}}';
         }

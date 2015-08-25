@@ -2,7 +2,7 @@
 module {{module}} {
     'use strict';
 
-    export class {{className}} {{#ancestorClass}}extends {{.}}{{/ancestorClass}} {
+    export interface {{className}} {{#ancestorClass}}extends {{.}}{{/ancestorClass}} {
 
     {{#properties}}
         {{#description}}/*{{.}}*/{{/description}}
