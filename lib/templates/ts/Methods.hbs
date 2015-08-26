@@ -8,8 +8,14 @@ module {{module}} {
 
 
         /* @ngInject */
-        constructor(private $http: angular.IHttpService{{> constructorArgs}}) {
-            this.baseUri = '{{scheme}}' + '://' + '{{host}}' + '{{basePath}}';
+        constructor(private $http: angular.IHttpService{{#hostInject}}, {{.}}: string{{/hostInject}}{{> constructorArgs}}) {
+            var hostName = '{{host}}';
+            {{#hostInject}}
+            if ({{.}}) {
+                hostName = {{.}};
+            }
+            {{/hostInject}}
+            this.baseUri = '{{scheme}}' + '://' + hostName + '{{basePath}}';
         }
         {{#methods}}
 

@@ -132,6 +132,7 @@ function main(options: any) {
                                         clientName: clientName,
                                         basePath: swaggerObject.basePath,
                                         host: swaggerObject.host,
+                                        hostInject: options.hostInject,
                                         methods: generateMethodsContext(swaggerObject.paths),
                                         scheme: 'http'
                                     };
