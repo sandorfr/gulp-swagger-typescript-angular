@@ -78,7 +78,7 @@ function main(options: any) {
                                 var definition = swaggerObject.definitions[definitionName];
 
                                 var className = (<string>definitionName).replace(/\//g, '');
-                                if (className === 'Error'){
+                                if (className === 'Error') {
                                     className = 'ErrorDto';
                                 }
                                 var fileName = className + '.ts';
@@ -197,7 +197,7 @@ function getClassNameFromRef(ref: string): string {
     var lastSlash = ref.lastIndexOf('/');
     var className = ref.substring(lastSlash/*, ref.length - lastSlash - 1*/).replace(/~1/g, '').replace(/\//g, '');
 
-    if (className == 'Error'){
+    if (className == 'Error') {
         return 'ErrorDto';
     }
 
@@ -231,16 +231,20 @@ function getTypeScriptType(property: any): Type {
             if (property.properties) {
                 var propertyNames = _.keys(property.properties);
                 return {
-                    properties: propertyNames.map(x=> {return{
-                        name: x,
-                        type: getTypeScriptType(property.properties[x])
-                    }})
+                    properties: propertyNames.map(x=> {
+                        return {
+                            name: x,
+                            type: getTypeScriptType(property.properties[x])
+                        }
+                    })
                 };
             } else {
                 return {name: 'any'};
             }
         } else if (type === 'array') {
             return {name: getTypeScriptType(property.items).name + '[]'};
+        } else if (type === 'file') {
+            return {name: 'string', isFile : true};
         }
         else {
             gutil.log(gutil.colors.yellow("Unknown Type : " + type));
@@ -256,7 +260,7 @@ function generateMethodsContext(paths: any): any[] {
         var verbs = paths[path];
         for (let verb in verbs) {
             var details = verbs[verb];
-            var method = {
+            var method: any = {
                 description: details.description,
                 verb: (<string>verb).toUpperCase(),
                 verbCamlCase: firstLetterUpperCase(verb),
@@ -264,8 +268,11 @@ function generateMethodsContext(paths: any): any[] {
                 sanitizedPath: pathToCamlCase(path),
                 returnType: getMethodReturnType(details),
                 args: generateMethodsArgsContext(details),
-                security: details.security ? {key: 'security_' + _.keys(details.security[0])[0]} : null
+                security: details.security ? {key: 'security_' + _.keys(details.security[0])[0]} : null,
+                consumes: (details.consumes) ? details.consumes[0] : "application/json"
             };
+            method.isJson = method.consumes === "application/json";
+            method.isFormData = method.consumes === "multipart/form-data";
             methods.push(method);
         }
     }
@@ -298,6 +305,7 @@ function generateMethodsArgsContext(method: any): any[] {
                 isHeader: x.in === 'header',
                 isBody: x.in === 'body',
                 isPath: x.in === 'path',
+                isFormData: x.in === 'formData',
                 type: getTypeScriptType(x),
                 description: x.description,
                 optional: !x.required
